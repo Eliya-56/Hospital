@@ -1,0 +1,12 @@
+﻿
+
+<h2>Профиль успешно обновлён</h2>
+
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $(document).ready(function () {
+        setTimeout(function() {
+            window.location.href = "@Url.Action("UserProfile", "Account")";
+        }, 1000);
+    })
+</script>

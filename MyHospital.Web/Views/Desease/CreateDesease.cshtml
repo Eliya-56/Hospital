@@ -1,0 +1,34 @@
+﻿@model MyHospital.Web.Models.CreateDeseaseModel
+
+<div>
+
+    @using (Html.BeginForm("CreateDesease", "Desease", FormMethod.Post, new { @class = "form-horizontal", id = "createDeseaseForm" }))
+    {
+        @Html.AntiForgeryToken();
+
+        @Html.ValidationSummary();
+        <div class="form-group">
+            <label for="name">Жалоба:</label>
+            @Html.TextAreaFor(x => x.Complaint, new { @class = "form-control", placeholder = "Жалоба", id = "name" })
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(x => x.DoctorId, new { id = "doctor", value = ViewBag.DoctorId })
+        </div>
+        <div class="form-group">
+            <input class="btn btn-info" id="CreateDesease" type="submit" value="Создать" />
+        </div>
+    }
+</div>
+
+@section menu{
+    <div id="Update" class="menu-item active">
+        <p>Создать болезнь</p>
+    </div>
+    <div id="ReverseToDoctors" class="menu-item">
+        <p>Вернуться</p>
+    </div>
+}
+
+@section script{
+    @Scripts.Render("~/bundles/myscripts")
+}

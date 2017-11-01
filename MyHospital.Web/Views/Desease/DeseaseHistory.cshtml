@@ -1,0 +1,48 @@
+﻿@model IEnumerable<MyHospital.BLL.DTO.DeseaseRecordDTO>
+
+@{
+    ViewBag.Title = "История болезни";
+}
+
+<h2>История болезни</h2>
+
+@foreach (var record in Model)
+{
+    <p class="history-header">@record.Date</p>
+    <p class="history-body">@record.Text</p>
+    <hr />
+}
+
+@if (!ViewBag.IsClosed && (ViewBag.Role == "admin" || ViewBag.Role == "doctor"))
+{
+    using (Html.BeginForm("AddRecord", "Desease", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        @Html.AntiForgeryToken();
+        @Html.Hidden("DeseaseId", (int)ViewBag.Id)
+        @Html.TextArea("Text", new { @class = "form-control" });
+        <div class="form-group">
+            <input type="submit" value="Добавить" class="btn btn-primary" />
+        </div>
+    }
+}
+
+@section menu{
+    <div id="Update" class="menu-item">
+        <p>Изменить</p>
+    </div>
+    <div id="History" class="menu-item active">
+        <p>История</p>
+    </div>
+    <div id="ReverseToDesease" class="menu-item">
+        <p>Вернуться</p>
+    </div>
+}
+
+@section script{
+    @Scripts.Render("~/bundles/myscripts")
+    <script type="text/javascript">
+        $('#Update').click(function () {
+            location.href = '/Desease/UpdateDesease/' + @((int)ViewBag.Id);
+        });
+    </script>
+}

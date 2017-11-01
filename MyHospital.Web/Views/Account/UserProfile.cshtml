@@ -1,0 +1,68 @@
+﻿@model MyHospital.BLL.DTO.UserDTO
+
+<h1>Профиль</h1>
+
+
+@if (Model is MyHospital.BLL.DTO.DoctorDTO)
+{
+    <p class="main-item">Доктор</p>
+    <p class="main-item">Специализация: @(((MyHospital.BLL.DTO.DoctorDTO)Model).Specialization)</p>
+}
+else if (Model is MyHospital.BLL.DTO.PatientDTO)
+{
+    <p class="main-item">Пациент</p>
+    <p class="main-item">Идентификационный код: @(((MyHospital.BLL.DTO.PatientDTO)Model).TaxCode)</p>
+}
+<p class="main-item">Имя: @Model.Name</p>
+@if (Model.Email == null)
+{
+    <p class="main-item">Email: Не указано</p>
+}
+else
+{
+    <p class="main-item">Email: @Model.Email</p>
+}
+<p class="main-item">Дата регистрации @Model.RegistrationDate</p>
+
+@if ((Model is MyHospital.BLL.DTO.DoctorDTO) || (Model is MyHospital.BLL.DTO.PatientDTO))
+{
+    <button class="btn btn-primary" data-toggle="modal" data-target="#updateProfile">Изменить</button>
+    <div class="modal fade" id="updateProfile">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Введите новые данные</h3>
+                </div>
+                <div class="modal-body">
+                    @Html.Action("UpdateProfile", "Account")
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section menu{
+    <div id="Profile" class="menu-item active">
+        <p>Профиль</p>
+    </div>
+    <div id="Doctors" class="menu-item">
+        <p>Доктора</p>
+    </div>
+    @if (ViewBag.Role == "doctor" || ViewBag.Role == "admin")
+    {
+        <div id="Patients" class="menu-item">
+            <p>Пациенты</p>
+         </div>
+    }
+    <div id="Deseases" class="menu-item">
+        <p>Болезни</p>
+    </div>
+    <div id="Logout" class="menu-item">
+        <p>Выйти</p>
+    </div>
+}
+
+
+@section script{
+    @Scripts.Render("~/bundles/myscripts")
+}

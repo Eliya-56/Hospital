@@ -1,0 +1,12 @@
+﻿
+
+<h2>Болезнь создана успешно</h2>
+
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $(document).ready(function () {
+        setTimeout(function() {
+            window.location.href = "@Url.Action("Doctors", "Account")";
+        }, 1000);
+    })
+</script>

@@ -1,0 +1,90 @@
+﻿@model MyHospital.Web.Models.RegistrationModel
+
+@section menu{
+    <div id="Auth" class="menu-item">
+        <p>Авторизация</p>
+    </div>
+    <div id="Reg" class="menu-item active">
+        <p>Регистрация</p>
+    </div>
+}
+
+@section script{
+    @Scripts.Render("~/bundles/authscript")
+}
+
+<h1>Регистрация</h1>
+<div class="tabs">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#doctor" data-toggle="tab">Доктор</a></li>
+        <li><a href="#patient" data-toggle="tab">Пациент</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="doctor">
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", id = "registerForm1" }))
+            {
+                @Html.AntiForgeryToken();
+
+                @Html.ValidationSummary();
+                <div class="form-group">
+                    <label for="login">Логин:</label>
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Логин", id = "login1" })
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = "Email", id = "email1" })
+                </div>
+                <div class="form-group">
+                    <label for="pass">Пароль:</label>
+                    @Html.PasswordFor(x => x.Password, new { @class = "form-control", placeholder = "Пароль", id = "pass1" })
+                </div>
+                <div class="form-group">
+                    <label for="confpass">Повторите пароль:</label>
+                    @Html.PasswordFor(x => x.ConfirmPassword, new { @class = "form-control", placeholder = "Пароль", id = "confpass1" })
+                </div>
+                <div class="form-group">
+                    <label for="spec">Специализация:</label>
+                    @Html.TextBoxFor(x => x.Specialization, new { @class = "form-control", placeholder = "Специализация", id = "spec1" })
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="Role" value="doctor" id="Role1" />
+                </div>
+                <input id="#registerSubmit" type="submit" value="Зарегистрироваться" class="btn btn-primary" />
+            }
+        </div>
+        <div class="tab-pane fade" id="patient">
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", id = "registerForm2" }))
+            {
+                @Html.AntiForgeryToken();
+
+                @Html.ValidationSummary();
+                <div class="form-group">
+                    <label for="login">Логин:</label>
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Логин", id = "login2" })
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = "Email", id = "email2" })
+                </div>
+                <div class="form-group">
+                    <label for="pass">Пароль:</label>
+                    @Html.PasswordFor(x => x.Password, new { @class = "form-control", placeholder = "Пароль", id = "pass2" })
+                </div>
+                <div class="form-group">
+                    <label for="confpass">Повторите пароль:</label>
+                    @Html.PasswordFor(x => x.ConfirmPassword, new { @class = "form-control", placeholder = "Пароль", id = "confpass2" })
+                </div>
+                <div class="form-group">
+                    <label for="tax">Идентификационный код:</label>
+                    <input class="form-control" type="number" id="tax" name="TaxCode" />
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="Role" value="patient" id="Role2" />
+                </div>
+                <input id="#registerSubmit2" type="submit" value="Зарегистрироваться" class="btn btn-primary" />
+            }
+        </div>
+    </div>
+</div>
+
+

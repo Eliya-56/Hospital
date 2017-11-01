@@ -1,0 +1,16 @@
+﻿
+@section menu{
+    <div id="Auth" class="menu-item active">
+        <p>Авторизация</p>
+    </div>
+    <div id="Reg" class="menu-item">
+        <p>Регистрация</p>
+    </div>
+}
+
+@Html.Action("Login", "Account")
+
+
+@section script{
+    @Scripts.Render("~/bundles/authscript")
+}

@@ -1,0 +1,163 @@
+﻿@model MyHospital.Web.Models.UpdateDeseaseModel
+
+<h2>Изменение болезни</h2>
+
+<p>@Model.Message</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Параметр</th>
+            <th>Текущее значение</th>
+            @if ((ViewBag.Role == "doctor" || ViewBag.Role == "admin"))
+            {
+                <th>Новое значение</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <p>Название</p>
+            </td>
+            <td>
+                <p>@Model.Name</p>
+            </td>
+            @if ((ViewBag.Role == "doctor" || ViewBag.Role == "admin"))
+            {
+                <td>
+                    @using (Html.BeginForm("ChangeName", "Desease", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken();
+                        @Html.Hidden("DeseaseId", Model.Id);
+                        <div class="form-group">
+                            @Html.TextBoxFor(x => x.Name, new { @class = "form-control", placeholder = "Название" })
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Изменить" class="btn btn-primary" />
+                        </div>
+                    }
+                </td>
+            }
+        </tr>
+        <tr>
+            <td>
+                <p>Лечаший врач</p>
+            </td>
+            <td>
+                <p>@Model.DoctorName</p>
+            </td>
+            @if ((ViewBag.Role == "doctor" || ViewBag.Role == "admin"))
+            {
+                <td>
+                    @if (!ViewBag.IsClosed)
+                    {
+                        using (Html.BeginForm("ChangeDoctor", "Desease", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken();
+                            @Html.Hidden("DeseaseId", Model.Id);
+                            <div class="form-group">
+                                @Html.DropDownList("DoctorId", (SelectList)ViewBag.doctor)
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Изменить" class="btn btn-primary" />
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>Болезнь закрыта</p>
+                    }
+                </td>
+            }
+        </tr>
+        <tr>
+            <td>
+                <p>Статус</p>
+            </td>
+            <td>
+                <p>@Model.Status</p>
+            </td>
+            @if ((ViewBag.Role == "doctor" || ViewBag.Role == "admin"))
+            {
+                <td>
+                    @if (!ViewBag.IsClosed)
+                {
+                    using (Html.BeginForm("ChangeStatus", "Desease", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+                    {
+                            @Html.AntiForgeryToken();
+                            @Html.Hidden("DeseaseId", Model.Id);
+                            <div class="form-group">
+                                @Html.DropDownList("Status", (SelectList)ViewBag.statuses)
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Изменить" class="btn btn-primary" />
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>Болезнь закрыта</p>
+                    }
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>
+<p class="history-header">Жалоба пациента</p>
+<p class="history-body">@Model.Complaint</p>
+<br /> 
+@if ((ViewBag.Role == "doctor" || ViewBag.Role == "admin"))
+{
+    if (!ViewBag.IsClosed)
+    {
+        using (Html.BeginForm("CloseDesease", "Desease", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+        {
+            @Html.AntiForgeryToken();
+            @Html.Hidden("DeseaseId", Model.Id)
+            <div class="form-group">
+                <input type="submit" value="Закрыть болезнь" class="btn btn-primary" />
+            </div>
+        }
+    }
+    else
+    {
+        using (Html.BeginForm("ReOpenDesease", "Desease", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+        {
+            @Html.AntiForgeryToken();
+            @Html.Hidden("DeseaseId", Model.Id)
+            <div class="form-group">
+                <input type="submit" value="Восстановить болезнь" class="btn btn-primary" />
+            </div>
+        }
+    }
+    <br />
+    using (Html.BeginForm("DeleteDesease", "Desease", FormMethod.Post, new { @class = "form-inline", role = "form", id = "delete" }))
+    {
+        @Html.AntiForgeryToken();
+        @Html.Hidden("DeseaseId", Model.Id)
+        <div class="form-group">
+            <input type="submit" onClick="return confirm('Вы подтверждаете удаление?');" value="Удалить болезнь" class="btn btn-primary" />
+        </div>
+    }
+}
+@section menu{
+    <div id="Update" class="menu-item active">
+        <p>Изменить</p>
+    </div>
+    <div id="History" class="menu-item">
+        <p>История</p>
+    </div>
+    <div id="ReverseToDesease" class="menu-item">
+        <p>Вернуться</p>
+    </div>
+}
+
+@section script{
+    @Scripts.Render("~/bundles/myscripts")
+    <script type="text/javascript">
+        $('#History').click(function () {
+            location.href = '/Desease/DeseaseHistory/' + @Model.Id;
+        });
+    </script>
+}

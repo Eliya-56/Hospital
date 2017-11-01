@@ -1,0 +1,98 @@
+﻿@model IEnumerable<MyHospital.BLL.DTO.DoctorDTO>
+
+
+<h1>Доктора</h1>
+@using (Html.BeginForm("Doctors", "Account", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+{
+    @Html.TextBox("Name", null, new { @class = "form-control", id = "DoctorName" });
+    <div class="form-group">
+        <button id="SearchDoctors" class="btn btn-primary">Искать</button>
+    </div>
+}
+
+    @if (Model.Count() > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                    <th>Специализация</th>
+                        @if (ViewBag.Role == "patient")
+                        {
+                            <th>Действие</th>
+                        }
+                </tr>
+            </thead>
+            @foreach (var doctor in Model)
+            {
+                <tbody>
+                    <tr>
+                        <td>@doctor.Name</td>
+                        <td>@doctor.Specialization</td>
+                        @if (ViewBag.Role == "patient")
+                        {
+                            <td>
+                                <a class="btn btn-danger btn-xs" href="@Url.Action("CreateDesease", "Desease", new { DoctorId = doctor.Id })">Обратиться</a>
+                            </td>
+                        }
+                    </tr>
+                </tbody>
+            }
+        </table>
+        <div class="btn-group">
+            @for (int i = 0; i < ViewBag.PageCount; i++)
+            {
+                if (i == ViewBag.Page)
+                {
+                    <a class="btn btn-primary" href="@Url.Action("Doctors", new { Page = i, Name = ViewBag.Name })">@(i + 1)</a>
+                }
+                else
+                {
+                    <a class="btn selected btn-default" href="@Url.Action("Doctors", new { Page = i, Name = ViewBag.Name })">@(i + 1)</a>
+                }
+            }
+        </div>
+    }
+    else
+    {
+        <br />
+        <p>Нет докторов</p>
+        <button id="AllDoctors" class="btn btn-info">Показать всех</button>
+    }
+
+@section menu{
+    <div id="Profile" class="menu-item">
+        <p>Профиль</p>
+    </div>
+    <div id="Doctors" class="menu-item active">
+        <p>Доктора</p>
+    </div>
+    @if (ViewBag.Role == "doctor" || ViewBag.Role == "admin")
+    {
+        <div id="Patients" class="menu-item">
+            <p>Пациенты</p>
+        </div>
+    }
+    <div id="Deseases" class="menu-item">
+        <p>Болезни</p>
+    </div>
+    <div id="Logout" class="menu-item">
+        <p>Выйти</p>
+    </div>
+}
+
+
+@section script{
+    @Scripts.Render("~/bundles/myscripts")
+    <script type="text/javascript">
+        $(function () {
+            $('#SearchDoctors').click(function () {
+                var name = $("#DoctorName").val();
+                location.href = '/Account/Doctors' + name;
+            });
+            $('#AllDoctors').click(function () {
+                location.href = '/Account/Doctors';
+            });
+        });
+    </script>
+}

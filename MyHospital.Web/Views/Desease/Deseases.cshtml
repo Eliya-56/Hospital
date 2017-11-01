@@ -1,0 +1,109 @@
+﻿@model IEnumerable<MyHospital.BLL.DTO.DeseaseDTO>
+
+<h1>Болезни</h1>
+
+@using (Html.BeginForm("Deseases", "Desease", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+{
+    @Html.TextBox("Name", null, new { @class = "form-control", id = "DeseaseName" });
+    <div class="form-group">
+        <button id="SearchDesease" class="btn btn-primary">Искать</button>
+    </div>
+}
+
+@if (Model.Count() == 0)
+{
+    <br/>
+    <p>Нет болезней</p>
+    <button id="AllDeseases" class="btn btn-info">Показать все</button>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Лечаший врач</th>
+                <th>Пациент</th>
+                <th>Статус</th>
+                <th>Дата начала</th>
+                <th>Дата окончания</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        @foreach (var desease in Model)
+        {
+            <tbody>
+                <tr>
+                    <td>@desease.Name</td>
+                    <td>@desease.DoctorName</td>
+                    <td>@desease.PatientName</td>
+                    <td>@desease.Status</td>
+                    <td>@desease.StartDate</td>
+                    @if (desease.EndDate == null)
+                    {
+                        <td>Текущая</td>
+                    }
+                    else
+                    {
+                        <td>@desease.EndDate</td>
+                    }
+                    <td>
+                        @Html.ActionLink("Параметры", "UpdateDesease", new { desease.Id })
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+    <div class="btn-group">
+        @for (int i = 0; i < ViewBag.PageCount; i++)
+        {
+            if (i == ViewBag.Page)
+            {
+                <a class="btn btn-primary" href="@Url.Action("Deseases", new { Page = i, Name = ViewBag.Name })">@(i + 1)</a>
+            }
+            else
+            {
+                <a class="btn selected btn-default" href="@Url.Action("Deseases", new { Page = i, Name = ViewBag.Name })">@(i + 1)</a>
+            }
+        }
+    </div>
+}
+
+
+
+@section menu{
+    <div id="Profile" class="menu-item">
+        <p>Профиль</p>
+    </div>
+    <div id="Doctors" class="menu-item">
+        <p>Доктора</p>
+    </div>
+    @if (ViewBag.Role == "doctor" || ViewBag.Role == "admin")
+    {
+        <div id="Patients" class="menu-item">
+            <p>Пациенты</p>
+         </div>
+    }
+    <div id="Deseases" class="menu-item active">
+        <p>Болезни</p>
+    </div>
+    <div id="Logout" class="menu-item">
+        <p>Выйти</p>
+    </div>
+}
+
+
+@section script{
+    @Scripts.Render("~/bundles/myscripts")
+    <script type="text/javascript">
+        $(function () {
+            $('#SearchDesease').click(function () {
+                var name = $("#DeseaseName").val();
+                location.href = '/Desease/Deseases' + name;
+            });
+            $('#AllDeseases').click(function () {
+                location.href = '/Desease/Deseases';
+            });
+        });
+    </script>
+}

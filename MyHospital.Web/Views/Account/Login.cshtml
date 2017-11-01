@@ -1,0 +1,34 @@
+﻿
+@section menu{
+    <div id="Auth" class="menu-item active">
+        <p>Авторизация</p>
+    </div>
+    <div id="Reg" class="menu-item">
+        <p>Регистрация</p>
+    </div>
+    <div id="Inf" class="menu-item">
+        <p>Инфо</p>
+    </div>
+}
+
+@section script{
+    @Scripts.Render("~/bundles/myscripts")
+}
+
+<h1>Авторизация</h1>
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal", id = "loginForm" }))
+    {
+                    @Html.AntiForgeryToken();
+
+                    @Html.ValidationSummary();
+        <div class="form-group">
+            <label for="login">Логин:</label>
+            @Html.TextBox("Name", null, new { @class = "form-control", placeholder = "Логин", id = "login"})
+        </div>
+        <div class="form-group">
+            <label for="pass">Пароль:</label>
+            @Html.Password("Password", null, new { @class = "form-control", placeholder = "Пароль", id = "pass"})
+        </div>
+        <input id="loginSubmit" type="submit" value="Залогиниться" class="btn btn-primary" />
+
+    }

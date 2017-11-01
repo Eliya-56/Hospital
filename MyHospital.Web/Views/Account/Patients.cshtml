@@ -1,0 +1,88 @@
+﻿@model IEnumerable<MyHospital.BLL.DTO.PatientDTO>
+
+<h1>Пациенты</h1>
+
+@using (Html.BeginForm("Patients", "Account", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+{
+    @Html.TextBox("Name", null, new { @class = "form-control", id = "PatientName" });
+    <div class="form-group">
+        <button id="SearchPatients" class="btn btn-primary">Искать</button>
+    </div>
+}
+
+@if (Model.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Идентификационный код</th>
+                <th>Дата регистрации</th>
+            </tr>
+        </thead>
+        @foreach (var patient in Model)
+        {
+            <tbody>
+                <tr>
+                    <td>@patient.Name</td>
+                    <td>@patient.TaxCode</td>
+                    <td>@patient.RegistrationDate</td>
+                </tr>
+            </tbody>
+        }
+    </table>
+    <div class="btn-group">
+        @for (int i = 0; i < ViewBag.PageCount; i++)
+        {
+            if (i == ViewBag.Page)
+            {
+                <a class="btn btn-primary" href="@Url.Action("Patients", new { Page = i, Name = ViewBag.Name })">@(i + 1)</a>
+            }
+            else
+            {
+                <a class="btn selected btn-default" href="@Url.Action("Patients", new { Page = i, Name = ViewBag.Name })">@(i + 1)</a>
+            }
+        }
+    </div>
+}
+else
+{
+    <br />
+    <p>Нет пациентов</p>
+        <button id="AllPatients" class="btn btn-info">Показать всех</button>
+}
+
+
+@section menu{
+    <div id="Profile" class="menu-item">
+        <p>Профиль</p>
+    </div>
+    <div id="Doctors" class="menu-item">
+        <p>Доктора</p>
+    </div>
+    <div id="Patients" class="menu-item active">
+        <p>Пациенты</p>
+    </div>
+    <div id="Deseases" class="menu-item">
+        <p>Болезни</p>
+    </div>
+    <div id="Logout" class="menu-item">
+        <p>Выйти</p>
+    </div>
+}
+
+
+@section script{
+    @Scripts.Render("~/bundles/myscripts")
+    <script type="text/javascript">
+        $(function () {
+            $('#SearchPatients').click(function () {
+                var name = $("#PatientName").val();
+                location.href = '/Account/Patients' + name;
+            });
+            $('#AllPatients').click(function () {
+                location.href = '/Account/Patients';
+            });
+        });
+    </script>
+}

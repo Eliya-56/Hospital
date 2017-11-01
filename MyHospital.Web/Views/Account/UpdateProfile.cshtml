@@ -1,0 +1,54 @@
+﻿@model MyHospital.Web.Models.UpdateProfileModel
+
+
+<div id="UpdateForm">
+
+    @using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post, new { @class = "form-horizontal", id = "UpdateProfile" }))
+    {
+        @Html.AntiForgeryToken();
+
+        @Html.ValidationSummary();
+        @Html.HiddenFor(x => x.Id, new { value = Model.Id })
+        <div class="form-group">
+            <label for="login">Логин:</label>
+            @Html.TextBoxFor(x => x.Name, new { value = Model.Name, @class = "form-control", placeholder = "Имя" })
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            @Html.TextBoxFor(x => x.Email, new { value = Model.Email, @class = "form-control", placeholder = "Email" })
+        </div>
+        @Html.HiddenFor(x => x.Role, new { value = Model.Role })
+        if (Model.Role == "doctor")
+        {
+            <div class="form-group">
+                <label for="spec">Специализация:</label>
+                @Html.TextBox("Specialization", null, new { @class = "form-control", placeholder = "Специализация", value = ViewBag.Specialization })
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label for="tax">Идентификационный код:</label>
+                <input class="form-control" value=@ViewBag.TaxCode type="number" name="TaxCode" />
+            </div>
+        }
+        <input id="#Update" type="submit" value="Обновить" class="btn btn-primary" />
+    }
+</div>
+
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+<script type="text/javascript">
+    $(function () {
+        $('#UpdateProfile').submit(function (event) {
+            event.preventDefault();
+            $.post('http://' + location.host + '/Account/UpdateProfile', $('#UpdateProfile').serialize(),
+                function (data) {
+                    $('#UpdateForm').html(data);
+                    $('deseaseForm').modal("show");
+                });
+        });
+    });
+</script>
+
