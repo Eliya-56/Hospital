@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace MyHospital.Web.Models
 {
     public class RegistrationModel
     {
-        //[Required(AllowEmptyStrings = false, ErrorMessage = "Требуется имя")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Требуется имя")]
         public string Name { get; set; }
         public string Email { get; set; }
-        //[Required(AllowEmptyStrings = false, ErrorMessage = "Требуется пароль")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Требуется пароль")]
         public string Password { get; set; }
-        //[DataType(DataType.Password)]
-        //[System.ComponentModel.DataAnnotations.Compare("Password",ErrorMessage = "Пароли не совпадают")]
+        [DataType(DataType.Password)]
+        [System.ComponentModel.DataAnnotations.Compare("Password",ErrorMessage = "Пароли не совпадают")]
         public string ConfirmPassword { get; set; }
         [Required]
         [HiddenInput(DisplayValue = false)]

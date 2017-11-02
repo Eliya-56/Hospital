@@ -31,7 +31,6 @@ namespace MyHospital.Web.Controllers
         public DeseaseController(IDeseaseService DeseaseService)
         {
             this.DeseaseService = DeseaseService;
-            //ServiceCreator = new ServiceCreator();
             PageSize = 7;
         }
 

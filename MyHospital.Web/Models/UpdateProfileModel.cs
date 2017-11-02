@@ -11,7 +11,7 @@ namespace MyHospital.Web.Models
     {
         [HiddenInput(DisplayValue = false)]
         public string Id { get; set; }
-        //[Required(AllowEmptyStrings = false, ErrorMessage = "Требуется имя")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Требуется имя")]
         public string Name { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }

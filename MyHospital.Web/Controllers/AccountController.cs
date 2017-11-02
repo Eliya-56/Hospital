@@ -43,7 +43,6 @@ namespace MyHospital.Web.Controllers
         public AccountController(IDeseaseService DeseaseService)
         {
             this.DeseaseService = DeseaseService;
-            //ServiceCreator = new ServiceCreator();
             PageSize = 7;
         }
 
@@ -63,18 +62,6 @@ namespace MyHospital.Web.Controllers
             if(Model.Role == "doctor" && string.IsNullOrWhiteSpace(Model.Specialization))
             {
                 ModelState.AddModelError("Specialization", "Укажите специализацию");
-            }
-            if (string.IsNullOrWhiteSpace(Model.Name))
-            {
-                ModelState.AddModelError("Name", "Укажите имя");
-            }
-            if (string.IsNullOrWhiteSpace(Model.Password))
-            {
-                ModelState.AddModelError("Password", "Укажите пароль");
-            }
-            if (Model.Password != Model.ConfirmPassword)
-            {
-                ModelState.AddModelError("ConfirmPassword", "Пароли не совпадают");
             }
             if (Model.Role == "patient" && Model.TaxCode == null)
             {
@@ -126,14 +113,6 @@ namespace MyHospital.Web.Controllers
         public async Task<ActionResult> Login(LoginModel Model)
         {
             await SetInitialDataAsync();
-            if(string.IsNullOrWhiteSpace(Model.Name))
-            {
-                ModelState.AddModelError("Name", "Укажите имя");
-            }
-            if (string.IsNullOrWhiteSpace(Model.Password))
-            {
-                ModelState.AddModelError("Name", "Укажите пароль");
-            }
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO { Name = Model.Name, Password = Model.Password };
@@ -245,10 +224,6 @@ namespace MyHospital.Web.Controllers
             {
                 ModelState.AddModelError("Specialization", "Укажите идентификационный код");
             }
-            if(string.IsNullOrWhiteSpace(Model.Name))
-            {
-                ModelState.AddModelError("Name", "Укажите имя");
-            }
             if (ModelState.IsValid)
             {
                 UserDTO userDto;
@@ -274,7 +249,6 @@ namespace MyHospital.Web.Controllers
                 if (operationDetails.Succedeed)
                 {
                     return PartialView("SuccessUpdateProfile");
-                    //return RedirectToAction("UserProfile");
                 }
                 else
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
