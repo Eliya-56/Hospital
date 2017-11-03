@@ -1,5 +1,8 @@
 # Hospital
-there is connectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Hospital;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+
+You may register as patient or doctor. Patients can choose doctor, doctor can edit desease and history
+
+there is<br> connectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Hospital;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"<br>
   In Web.config.
   
   Initialize users 
